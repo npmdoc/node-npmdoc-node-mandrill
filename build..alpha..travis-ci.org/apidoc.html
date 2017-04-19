@@ -61,12 +61,92 @@
 
     <li class="apidocModuleLi"><a href="#apidoc.module.node-mandrill">module node-mandrill</a><ol>
 
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.node-mandrill.node-mandrill">
+            function <span class="apidocSignatureSpan"></span>node-mandrill
+            <span class="apidocSignatureSpan">(key)</span>
+            </a>
+
+        </li>
+
     </ol></li>
 
 </ol></div>
 
 <div class="apidocSectionDiv">
 <h1><a href="#apidoc.module.node-mandrill" id="apidoc.module.node-mandrill">module node-mandrill</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.node-mandrill.node-mandrill" id="apidoc.element.node-mandrill.node-mandrill">
+        function <span class="apidocSignatureSpan"></span>node-mandrill
+        <span class="apidocSignatureSpan">(key)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function makeMandrill(key)
+{
+    function mandrill(path, opts, callback)
+    {
+        var format = path.split(&#x27;.&#x27;);
+
+        path = format[0];
+
+        if (format.length == 1) format = &#x27;json&#x27;;
+        else format = format[1].toLowerCase();
+
+        if (typeof opts == &#x27;function&#x27;)
+        {
+            var callback = opts;
+            opts = { key: key };
+        }
+
+        var requestOptions = {
+            method: &#x27;POST&#x27;,
+            url: MANDRILL_API_ROOT + path + &#x27;.&#x27; + format,
+        };
+
+        requestOptions[&#x27;body&#x27;] = JSON.stringify( _.extend({ key: key }, opts) );
+
+        request(requestOptions, function(error, response, body)
+        {
+            if (typeof callback == &#x27;function&#x27;)
+            {
+                if (!error)
+                {
+                    //everything is good!
+                    if (format == &#x27;json&#x27;)
+                    {
+                        try {
+                            body = JSON.parse(body);
+                        } catch (e) {
+                            callback(e);
+                        }
+                    }
+
+                    if (response[&#x27;statusCode&#x27;] &#x3e;= 200 &#x26;&#x26; response[&#x27;statusCode&#x27;] &#x3c; 300)
+                    {
+                        callback(null, body);
+                    }
+                    else
+                    {
+                        callback(body);
+                    }
+                }
+                else
+                {
+                    callback(error);
+                }
+            }
+        });
+    }
+
+    return mandrill;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
 
 </div>
 

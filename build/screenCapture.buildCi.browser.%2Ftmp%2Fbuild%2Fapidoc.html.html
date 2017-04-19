@@ -1,0 +1,152 @@
+<html><head></head><body><div class="apidocDiv">
+<style>
+/*csslint
+*/
+.apidocDiv {
+    background: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.apidocDiv a[href] {
+    color: #33f;
+    font-weight: bold;
+    text-decoration: none;
+}
+.apidocDiv a[href]:hover {
+    text-decoration: underline;
+}
+.apidocCodeCommentSpan {
+    background: #bbf;
+    color: #000;
+    display: block;
+}
+.apidocCodeKeywordSpan {
+    color: #d00;
+    font-weight: bold;
+}
+.apidocCodePre {
+    background: #eef;
+    border: 1px solid;
+    color: #777;
+    padding: 5px;
+    white-space: pre-wrap;
+}
+.apidocFooterDiv {
+    margin-top: 20px;
+    text-align: center;
+}
+.apidocModuleLi {
+    margin-top: 10px;
+}
+.apidocSectionDiv {
+    border-top: 1px solid;
+    margin-top: 20px;
+}
+.apidocSignatureSpan {
+    color: #777;
+    font-weight: bold;
+}
+</style>
+<h1>api documentation for
+    <a href="http://github.com/jimrubenstein/node-mandrill.git">node-mandrill (v1.0.1)</a>
+</h1>
+<h4>A node.js wrapper for MailChimp's Mandrill API.</h4>
+<div class="apidocSectionDiv"><a href="#apidoc.tableOfContents" id="apidoc.tableOfContents"><h1>table of contents</h1></a><ol>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.node-mandrill">module node-mandrill</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.node-mandrill.node-mandrill">
+            function <span class="apidocSignatureSpan"></span>node-mandrill
+            <span class="apidocSignatureSpan">(key)</span>
+            </a>
+
+        </li>
+
+    </ol></li>
+
+</ol></div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.node-mandrill" id="apidoc.module.node-mandrill">module node-mandrill</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.node-mandrill.node-mandrill" id="apidoc.element.node-mandrill.node-mandrill">
+        function <span class="apidocSignatureSpan"></span>node-mandrill
+        <span class="apidocSignatureSpan">(key)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function makeMandrill(key)
+{
+    function mandrill(path, opts, callback)
+    {
+        var format = path.split('.');
+
+        path = format[0];
+
+        if (format.length == 1) format = 'json';
+        else format = format[1].toLowerCase();
+
+        if (typeof opts == 'function')
+        {
+            var callback = opts;
+            opts = { key: key };
+        }
+
+        var requestOptions = {
+            method: 'POST',
+            url: MANDRILL_API_ROOT + path + '.' + format,
+        };
+
+        requestOptions['body'] = JSON.stringify( _.extend({ key: key }, opts) );
+
+        request(requestOptions, function(error, response, body)
+        {
+            if (typeof callback == 'function')
+            {
+                if (!error)
+                {
+                    //everything is good!
+                    if (format == 'json')
+                    {
+                        try {
+                            body = JSON.parse(body);
+                        } catch (e) {
+                            callback(e);
+                        }
+                    }
+
+                    if (response['statusCode'] &gt;= 200 &amp;&amp; response['statusCode'] &lt; 300)
+                    {
+                        callback(null, body);
+                    }
+                    else
+                    {
+                        callback(body);
+                    }
+                }
+                else
+                {
+                    callback(error);
+                }
+            }
+        });
+    }
+
+    return mandrill;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+</div>
+
+<div class="apidocFooterDiv">
+    [ this document was created with
+    <a href="https://github.com/kaizhu256/node-utility2" target="_blank">utility2</a>
+    ]
+</div>
+</div>
+</body></html>
